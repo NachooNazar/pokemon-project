@@ -1,4 +1,4 @@
-package com.project.nba;
+package com.project.pokemon;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

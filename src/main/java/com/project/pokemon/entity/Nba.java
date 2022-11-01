@@ -1,4 +1,4 @@
-package com.project.nba.entity;
+package com.project.pokemon.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,9 +13,9 @@ import javax.persistence.Table;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="birth")
-public class Birth {
+@Table(name = "nba")
+public class Nba {
     private Long id;
-    private String date;
-    private String country;
+    private int start;
+    private int pro;
 }

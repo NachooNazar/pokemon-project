@@ -1,4 +1,4 @@
-package com.project.nba.entity;
+package com.project.pokemon.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
