@@ -22,7 +22,10 @@ public class PokemonController {
     private RestTemplate restTemplate;
     @GetMapping("/hello")
     @CrossOrigin(origins = "*")
-    public List hello() {
+    public ResponseEntity<List> hello() {
+        if(repository.count() > 0){
+            return ResponseEntity.accepted().build();
+        }
         String uri = "https://pokeapi.co/api/v2/pokemon";
         List<Result> res = new ArrayList<Result>();
         for(int i = 1 ; i <= 2 ; i++ ){
@@ -31,7 +34,7 @@ public class PokemonController {
                 res.add(restTemplate.getForObject(uri+"?offset=20&limit=20",Result.class));
             }
         }
-        return res;
+        return ResponseEntity.ok(res);
     }
 
     //get all pokemons
