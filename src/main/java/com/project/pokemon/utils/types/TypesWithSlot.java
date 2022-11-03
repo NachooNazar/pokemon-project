@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TypesWithSlot {
     private TypesFromPokemon slot;
-    private TypeTwo types;
+    private TypeTwo type;
 }

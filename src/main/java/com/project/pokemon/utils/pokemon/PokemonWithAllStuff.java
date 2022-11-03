@@ -17,6 +17,6 @@ public class PokemonWithAllStuff {
     private int weight;
     private String name;
     private Sprites sprites;
-    private ArrayList<Stats> stats;
     private ArrayList<TypesWithSlot> types;
+    private ArrayList<Stats> stats;
 }

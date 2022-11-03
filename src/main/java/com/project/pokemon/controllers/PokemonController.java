@@ -43,14 +43,13 @@ public class PokemonController {
                 FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=100&offset=0", CountNextPrevResPk.class));
             }
         }
-        System.out.println(FirstQueryWithCountNextPrevResult);
         //return ResponseEntity.ok(res)
         //count - next - prev - !!results!!
 
         //resDetail
         /*
-        * Es un array con los dos results [[{pkmons}],[{pkmons}]]
-        * */
+         * Es un array con los dos results [[{pkmons}],[{pkmons}]]
+         * */
 
         ArrayList<ArrayResultsPkmon> namesAndUrls = new ArrayList<ArrayResultsPkmon>();
         for (CountNextPrevResPk countNextPrevResPk : FirstQueryWithCountNextPrevResult) {
@@ -58,54 +57,43 @@ public class PokemonController {
         }
 
         ArrayList<PokemonWithAllStuff> pokemons = new ArrayList<>();
-        System.out.println("asdasdasdasdasdas");
+
         for (ArrayResultsPkmon firsResults : namesAndUrls) {
-            System.out.println("ENTRE EN EL FOR");
             pokemons.add(restTemplate.getForObject(firsResults.getUrl(), PokemonWithAllStuff.class));
         }
+
         ArrayList<Pokemon> aux2 = new ArrayList<>();
-        System.out.println("asdasdasdasdasdas");
+
         for (PokemonWithAllStuff value : pokemons) {
-            System.out.println(value);
             ArrayList<Type> pkTypes = new ArrayList<>();
             for (TypesWithSlot el : value.getTypes()) {
-                pkTypes.add(new Type(el.getTypes().getName()));
+                pkTypes.add(new Type(el.getType().getName()));
+
             }
-            System.out.println("asdasdasdasdasdas");
-            System.out.println(value.getStats());
             Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
                     value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
                     ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
                     value.getStats().get(5).getBase_stat());
+            repository.save(pokemon);
             aux2.add(pokemon);
         }
         return ResponseEntity.ok(aux2);
-        /*
-        ArrayList<ArrayResultsPkmon> resDetail = new ArrayList<>();
-
-
-        for (CountNextPrevResPk re : res) {
-            resDetail.add(re.getResults());
-        }
-
-        System.out.println(resDetail);
-
-
-        System.out.println("qwdqwdqwd");
-
-        return ResponseEntity.ok(pokemons);*/
     }
 
 
     //get all pokemons
     @GetMapping("")
-    public List<Pokemon> getAllPokemons(){
-/*
-        if(repository.count() == 0){
-            Request request = new Request.Builder("https://pokeapi.co/api/v2/pokemon")
-                    .get().build();
-        }0*/
-        return repository.findAll();
+    public ResponseEntity<List> getAllPokemons(){
+    try{
+        if(repository.count() <= 0){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(repository.findAll());
+    }catch(Exception e){
+        return ResponseEntity.badRequest().build();
+    }
+
     }
 
     // --- FILTERS ---
