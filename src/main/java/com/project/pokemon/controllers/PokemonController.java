@@ -58,22 +58,26 @@ public class PokemonController {
         }
 
         ArrayList<PokemonWithAllStuff> pokemons = new ArrayList<>();
-
+        System.out.println("asdasdasdasdasdas");
         for (ArrayResultsPkmon firsResults : namesAndUrls) {
+            System.out.println("ENTRE EN EL FOR");
             pokemons.add(restTemplate.getForObject(firsResults.getUrl(), PokemonWithAllStuff.class));
         }
         ArrayList<Pokemon> aux2 = new ArrayList<>();
+        System.out.println("asdasdasdasdasdas");
         for (PokemonWithAllStuff value : pokemons) {
+            System.out.println(value);
             ArrayList<Type> pkTypes = new ArrayList<>();
             for (TypesWithSlot el : value.getTypes()) {
                 pkTypes.add(new Type(el.getTypes().getName()));
             }
-            System.out.println(value.getStats().get(0).getBase_stat());
-            /*Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
+            System.out.println("asdasdasdasdasdas");
+            System.out.println(value.getStats());
+            Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
                     value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
                     ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
                     value.getStats().get(5).getBase_stat());
-            aux2.add(pokemon);*/
+            aux2.add(pokemon);
         }
         return ResponseEntity.ok(aux2);
         /*
