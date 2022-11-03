@@ -43,7 +43,6 @@ public class PokemonController {
                 FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=100&offset=0", CountNextPrevResPk.class));
             }
         }
-        System.out.println(FirstQueryWithCountNextPrevResult);
         //return ResponseEntity.ok(res)
         //count - next - prev - !!results!!
 
@@ -62,34 +61,23 @@ public class PokemonController {
         for (ArrayResultsPkmon firsResults : namesAndUrls) {
             pokemons.add(restTemplate.getForObject(firsResults.getUrl(), PokemonWithAllStuff.class));
         }
+
         ArrayList<Pokemon> aux2 = new ArrayList<>();
+
         for (PokemonWithAllStuff value : pokemons) {
             ArrayList<Type> pkTypes = new ArrayList<>();
             for (TypesWithSlot el : value.getTypes()) {
-                pkTypes.add(new Type(el.getTypes().getName()));
+                pkTypes.add(new Type(el.getType().getName()));
+
             }
-            System.out.println(value.getStats().get(0).getBase_stat());
-            /*Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
+            Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
                     value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
                     ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
                     value.getStats().get(5).getBase_stat());
-            aux2.add(pokemon);*/
+
+            aux2.add(pokemon);
         }
         return ResponseEntity.ok(aux2);
-        /*
-        ArrayList<ArrayResultsPkmon> resDetail = new ArrayList<>();
-
-
-        for (CountNextPrevResPk re : res) {
-            resDetail.add(re.getResults());
-        }
-
-        System.out.println(resDetail);
-
-
-        System.out.println("qwdqwdqwd");
-
-        return ResponseEntity.ok(pokemons);*/
     }
 
 

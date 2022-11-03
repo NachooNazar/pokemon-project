@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-public class Stats {
-    private int base_stat;
+public class Stat {
+    private String name;
 }
