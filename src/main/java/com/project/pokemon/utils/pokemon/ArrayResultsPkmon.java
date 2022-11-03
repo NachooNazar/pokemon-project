@@ -1,4 +1,4 @@
-package com.project.pokemon.controllers;
+package com.project.pokemon.utils.pokemon;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class FirsResult {
+public class ArrayResultsPkmon {
 
     private String name;
     private String url;

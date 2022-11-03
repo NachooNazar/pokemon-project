@@ -19,8 +19,8 @@ public class Pokemon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String height;
-    private String weight;
+    private int height;
+    private int weight;
     private ArrayList<Type> types;
     private String image;
     private int hp;
@@ -28,11 +28,16 @@ public class Pokemon {
     private int defense;
     private int speed;
 
-    public Pokemon( String name, String height, String weight, ArrayList<Type> types, String image) {
+    public Pokemon( String name, int height, int weight, ArrayList<Type> types, String image, int hp, int attack, int defense, int speed) {
         this.name = name;
         this.height = height;
         this.weight = weight;
         this.types = types;
         this.image = image;
+        this.hp = hp;
+        this.attack = attack;
+        this.defense = defense;
+        this.speed = speed;
+        System.out.println(hp + " " + attack + " " + defense + " " + speed + "from constructor");
     }
 }

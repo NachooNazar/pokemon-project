@@ -1,4 +1,4 @@
-package com.project.pokemon.utils;
+package com.project.pokemon.utils.types;
 
 import lombok.Getter;
 import lombok.Setter;

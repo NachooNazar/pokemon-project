@@ -1,6 +1,6 @@
-package com.project.pokemon.controllers;
+package com.project.pokemon.utils.pokemon;
 
-import com.project.pokemon.entity.Pokemon;
+import com.project.pokemon.utils.pokemon.ArrayResultsPkmon;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Result {
+public class CountNextPrevResPk {
     private String next;
     private String previous;
-    private ArrayList<FirsResult> results;
+    private ArrayList<ArrayResultsPkmon> results;
 }

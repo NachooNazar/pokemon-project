@@ -1,13 +1,16 @@
 package com.project.pokemon.controllers;
 
 import com.project.pokemon.entity.Pokemon;
+import com.project.pokemon.entity.Type;
 import com.project.pokemon.repository.PokemonRepository;
+import com.project.pokemon.utils.pokemon.ArrayResultsPkmon;
+import com.project.pokemon.utils.pokemon.CountNextPrevResPk;
+import com.project.pokemon.utils.pokemon.PokemonWithAllStuff;
+import com.project.pokemon.utils.types.TypesWithSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import java.io.*;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,36 +29,67 @@ public class PokemonController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<List> hello() {
 
+        //Si hay pokemons no hace nada
         if(repository.count() > 0){
             return ResponseEntity.accepted().build();
         }
+
         String uri = "https://pokeapi.co/api/v2/pokemon";
-        List<Result> res = new ArrayList<Result>();
+        List<CountNextPrevResPk> FirstQueryWithCountNextPrevResult = new ArrayList<CountNextPrevResPk>();
 
         for(int i = 1 ; i <= 2 ; i++ ){
-            res.add(restTemplate.getForObject(uri,Result.class));
+            FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri, CountNextPrevResPk.class));
             if(i != 1){
-                res.add(restTemplate.getForObject(uri+"?limit=100000&offset=0",Result.class));
+                FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=100&offset=0", CountNextPrevResPk.class));
             }
         }
+        System.out.println(FirstQueryWithCountNextPrevResult);
+        //return ResponseEntity.ok(res)
+        //count - next - prev - !!results!!
 
-        ArrayList<ArrayList<FirsResult>> resDetail = new ArrayList<>();
+        //resDetail
+        /*
+        * Es un array con los dos results [[{pkmons}],[{pkmons}]]
+        * */
 
-        for (Result re : res) {
+        ArrayList<ArrayResultsPkmon> namesAndUrls = new ArrayList<ArrayResultsPkmon>();
+        for (CountNextPrevResPk countNextPrevResPk : FirstQueryWithCountNextPrevResult) {
+            namesAndUrls.addAll(countNextPrevResPk.getResults());
+        }
+
+        ArrayList<PokemonWithAllStuff> pokemons = new ArrayList<>();
+
+        for (ArrayResultsPkmon firsResults : namesAndUrls) {
+            pokemons.add(restTemplate.getForObject(firsResults.getUrl(), PokemonWithAllStuff.class));
+        }
+        ArrayList<Pokemon> aux2 = new ArrayList<>();
+        for (PokemonWithAllStuff value : pokemons) {
+            ArrayList<Type> pkTypes = new ArrayList<>();
+            for (TypesWithSlot el : value.getTypes()) {
+                pkTypes.add(new Type(el.getTypes().getName()));
+            }
+            System.out.println(value.getStats().get(0).getBase_stat());
+            /*Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
+                    value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
+                    ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
+                    value.getStats().get(5).getBase_stat());
+            aux2.add(pokemon);*/
+        }
+        return ResponseEntity.ok(aux2);
+        /*
+        ArrayList<ArrayResultsPkmon> resDetail = new ArrayList<>();
+
+
+        for (CountNextPrevResPk re : res) {
             resDetail.add(re.getResults());
         }
 
-       ArrayList<Pokemon> pokemons = new ArrayList<>();
+        System.out.println(resDetail);
 
-        for (int i = 0; i < resDetail.get(0).size(); i++){
-            pokemons.add(restTemplate.getForObject(resDetail.get(0).get(i).getUrl(),Pokemon.class));
-        }
-        for (int l =0; l < pokemons.size(); l++){
-            Pokemon pokemon = new Pokemon(pokemons.get(l).getName(), pokemons.get(l).getHeight(), pokemons.get(l).getWeight(), pokemons.get(l).getTypes(), pokemons.get(l).getImage());
 
-        }
+        System.out.println("qwdqwdqwd");
 
-        return ResponseEntity.ok(pokemons);
+        return ResponseEntity.ok(pokemons);*/
     }
 
 

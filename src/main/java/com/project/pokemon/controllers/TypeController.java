@@ -2,8 +2,8 @@ package com.project.pokemon.controllers;
 
 import com.project.pokemon.entity.Type;
 import com.project.pokemon.repository.TypeRepository;
-import com.project.pokemon.utils.TypeTwo;
-import com.project.pokemon.utils.TypesFromApi;
+import com.project.pokemon.utils.types.TypeTwo;
+import com.project.pokemon.utils.types.TypesFromApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "/api/type")
