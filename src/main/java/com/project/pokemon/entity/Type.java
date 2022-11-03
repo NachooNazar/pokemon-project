@@ -18,5 +18,8 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String typeImage;
+
+    public Type(String name) {
+        this.name = name;
+    }
 }
