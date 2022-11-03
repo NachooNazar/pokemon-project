@@ -27,4 +27,12 @@ public class Pokemon {
     private int attack;
     private int defense;
     private int speed;
+
+    public Pokemon( String name, String height, String weight, ArrayList<Type> types, String image) {
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        this.types = types;
+        this.image = image;
+    }
 }

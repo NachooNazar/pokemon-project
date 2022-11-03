@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import java.io.*;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,19 +25,39 @@ public class PokemonController {
     @GetMapping("/hello")
     @CrossOrigin(origins = "*")
     public ResponseEntity<List> hello() {
+
         if(repository.count() > 0){
             return ResponseEntity.accepted().build();
         }
         String uri = "https://pokeapi.co/api/v2/pokemon";
         List<Result> res = new ArrayList<Result>();
+
         for(int i = 1 ; i <= 2 ; i++ ){
             res.add(restTemplate.getForObject(uri,Result.class));
             if(i != 1){
-                res.add(restTemplate.getForObject(uri+"?offset=20&limit=20",Result.class));
+                res.add(restTemplate.getForObject(uri+"?limit=100000&offset=0",Result.class));
             }
         }
-        return ResponseEntity.ok(res);
+
+        ArrayList<ArrayList<FirsResult>> resDetail = new ArrayList<>();
+
+        for (Result re : res) {
+            resDetail.add(re.getResults());
+        }
+
+       ArrayList<Pokemon> pokemons = new ArrayList<>();
+
+        for (int i = 0; i < resDetail.get(0).size(); i++){
+            pokemons.add(restTemplate.getForObject(resDetail.get(0).get(i).getUrl(),Pokemon.class));
+        }
+        for (int l =0; l < pokemons.size(); l++){
+            Pokemon pokemon = new Pokemon(pokemons.get(l).getName(), pokemons.get(l).getHeight(), pokemons.get(l).getWeight(), pokemons.get(l).getTypes(), pokemons.get(l).getImage());
+
+        }
+
+        return ResponseEntity.ok(pokemons);
     }
+
 
     //get all pokemons
     @GetMapping("")
