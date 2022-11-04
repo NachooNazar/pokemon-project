@@ -11,4 +11,6 @@ import lombok.Setter;
 @Setter
 public class Stats {
     private int base_stat;
+    private int effort;
+    private Stat stat;
 }
