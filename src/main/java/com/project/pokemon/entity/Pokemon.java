@@ -1,9 +1,6 @@
 package com.project.pokemon.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "pokemon")
 public class Pokemon {
     @Id
@@ -38,6 +36,6 @@ public class Pokemon {
         this.attack = attack;
         this.defense = defense;
         this.speed = speed;
-        System.out.println(hp + " " + attack + " " + defense + " " + speed + "from constructor");
+
     }
 }
