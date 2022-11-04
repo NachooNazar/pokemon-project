@@ -48,22 +48,6 @@ public class PokemonController {
                     FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=2&offset=0", CountNextPrevResPk.class));
                 }
             }
-<<<<<<< HEAD
-            Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(), pkTypes,
-                    value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
-                    ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
-                    value.getStats().get(5).getBase_stat());
-            FileOutputStream fileOut =new FileOutputStream("/employee.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(pokemon);
-            repository.save(pokemon);
-            out.close();
-            fileOut.close();
-            aux2.add(pokemon);
-        }
-
-        return ResponseEntity.ok(aux2);
-=======
             //return ResponseEntity.ok(res)
             //count - next - prev - !!results!!
 
@@ -103,8 +87,6 @@ public class PokemonController {
         }catch (Exception e) {
             return ResponseEntity.ok(new ArrayList(Collections.singleton(e.getMessage())));
         }
-
->>>>>>> 938ca1e00387b06f94175e533fdfd9a1f39faed6
     }
 
 
