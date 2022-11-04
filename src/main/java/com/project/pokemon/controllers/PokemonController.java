@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +30,7 @@ public class PokemonController {
     private RestTemplate restTemplate;
     @GetMapping("/hello")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List> hello() {
+    public ResponseEntity<List> hello() throws IOException {
 
         //Si hay pokemons no hace nada
         if(repository.count() > 0){
@@ -74,9 +77,15 @@ public class PokemonController {
                     value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
                     ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
                     value.getStats().get(5).getBase_stat());
-
+            FileOutputStream fileOut =new FileOutputStream("/employee.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(pokemon);
+            repository.save(pokemon);
+            out.close();
+            fileOut.close();
             aux2.add(pokemon);
         }
+
         return ResponseEntity.ok(aux2);
     }
 
