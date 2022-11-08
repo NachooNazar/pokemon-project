@@ -14,3 +14,4 @@ public class Stats {
     private int effort;
     private Stat stat;
 }
+

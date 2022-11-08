@@ -48,13 +48,7 @@ public class PokemonController {
                     FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=2&offset=0", CountNextPrevResPk.class));
                 }
             }
-            //return ResponseEntity.ok(res)
-            //count - next - prev - !!results!!
 
-            //resDetail
-            /*
-             * Es un array con los dos results [[{pkmons}],[{pkmons}]]
-             * */
 
             ArrayList<ArrayResultsPkmon> namesAndUrls = new ArrayList<ArrayResultsPkmon>();
             for (CountNextPrevResPk countNextPrevResPk : FirstQueryWithCountNextPrevResult) {
