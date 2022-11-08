@@ -8,6 +8,7 @@ import com.project.pokemon.utils.pokemon.CountNextPrevResPk;
 import com.project.pokemon.utils.pokemon.PokemonWithAllStuff;
 import com.project.pokemon.utils.types.TypesWithSlot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -132,7 +133,6 @@ public class PokemonController {
     @GetMapping("/getByType/{name}")
     public ResponseEntity<List<Pokemon>> getPokemonsByType(@PathVariable String name){
         List<Pokemon> pokemon = repository.findAll();
-        System.out.println(pokemon + " soy pokemon po wn");
         try {
             if(pokemon.isEmpty()) {
                 return ResponseEntity.notFound().build();
@@ -152,13 +152,154 @@ public class PokemonController {
         }
     }
 
-    //get pokemons by str
+    //get pokemons by Attack
+@GetMapping("/forStr/{lowOrHigh}")
+
+    public ResponseEntity<List<Pokemon>> orderByAttack(@PathVariable String lowOrHigh){
+    List<Pokemon> pokemon = repository.findAll();
+    try {
+        if(Objects.equals(lowOrHigh, "low")){
+            pokemon.sort(new Comparator<Pokemon>() {
+             @Override
+             public int compare(Pokemon o1, Pokemon o2) {
+             return new Integer(o1.getAttack()).compareTo(o2.getAttack());
+              }});
+            return ResponseEntity.ok(pokemon);
+        }
+
+        if(Objects.equals(lowOrHigh, "high")){
+            pokemon.sort(new Comparator<Pokemon>() {
+                @Override
+                public int compare(Pokemon o1, Pokemon o2) {
+                    return new Integer(o2.getAttack()).compareTo(o1.getAttack());
+                }
+            });
+            return ResponseEntity.ok(pokemon);
+        }
+        return ResponseEntity.notFound().build();
+    }catch(Exception e) {
+        return ResponseEntity.badRequest().build();
+    }
+    }
 
     //get pokemons by speed
+    @GetMapping("/forSpeed/{lowOrHigh}")
 
+    public ResponseEntity<List<Pokemon>> orderBySpeed(@PathVariable String lowOrHigh){
+        List<Pokemon> pokemon = repository.findAll();
+        try {
+            if(Objects.equals(lowOrHigh, "low")){
+                pokemon.sort(new Comparator<Pokemon>() {
+                    @Override
+                    public int compare(Pokemon o1, Pokemon o2) {
+                        return new Integer(o1.getSpeed()).compareTo(o2.getSpeed());
+                    }});
+                return ResponseEntity.ok(pokemon);
+            }
+
+            if(Objects.equals(lowOrHigh, "high")){
+                pokemon.sort(new Comparator<Pokemon>() {
+                    @Override
+                    public int compare(Pokemon o1, Pokemon o2) {
+                        return new Integer(o2.getSpeed()).compareTo(o1.getSpeed());
+                    }
+                });
+                return ResponseEntity.ok(pokemon);
+            }
+            return ResponseEntity.notFound().build();
+        }catch(Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
     //get pokemons by hp
+    @GetMapping("/forHp/{lowOrHigh}")
 
-    //get pokemons by weight
+    public ResponseEntity<List<Pokemon>> orderByHp(@PathVariable String lowOrHigh) {
+        List<Pokemon> pokemon = repository.findAll();
+        try {
+            if (Objects.equals(lowOrHigh, "low")) {
+                pokemon.sort(new Comparator<Pokemon>() {
+                    @Override
+                    public int compare(Pokemon o1, Pokemon o2) {
+                        return new Integer(o1.getHp()).compareTo(o2.getHp());
+                    }
+                });
+                return ResponseEntity.ok(pokemon);
+            }
 
-    //get pokemons by height
+            if (Objects.equals(lowOrHigh, "high")) {
+                pokemon.sort(new Comparator<Pokemon>() {
+                    @Override
+                    public int compare(Pokemon o1, Pokemon o2) {
+                        return new Integer(o2.getHp()).compareTo(o1.getHp());
+                    }
+                });
+                return ResponseEntity.ok(pokemon);
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+        //get pokemons by weight
+
+        @GetMapping("/forWeigth/{lowOrHigh}")
+
+        public ResponseEntity<List<Pokemon>> orderByWeigth(@PathVariable String lowOrHigh) {
+            List<Pokemon> pokemon = repository.findAll();
+            try {
+                if (Objects.equals(lowOrHigh, "low")) {
+                    pokemon.sort(new Comparator<Pokemon>() {
+                        @Override
+                        public int compare(Pokemon o1, Pokemon o2) {
+                            return new Integer(o1.getWeight()).compareTo(o2.getWeight());
+                        }
+                    });
+                    return ResponseEntity.ok(pokemon);
+                }
+
+                if (Objects.equals(lowOrHigh, "high")) {
+                    pokemon.sort(new Comparator<Pokemon>() {
+                        @Override
+                        public int compare(Pokemon o1, Pokemon o2) {
+                            return new Integer(o2.getWeight()).compareTo(o1.getWeight());
+                        }
+                    });
+                    return ResponseEntity.ok(pokemon);
+                }
+                return ResponseEntity.notFound().build();
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+            //get pokemons by height
+            @GetMapping("/forHeigth/{lowOrHigh}")
+
+            public ResponseEntity<List<Pokemon>> orderByHeigth(@PathVariable String lowOrHigh) {
+                List<Pokemon> pokemon = repository.findAll();
+                try {
+                    if (Objects.equals(lowOrHigh, "low")) {
+                        pokemon.sort(new Comparator<Pokemon>() {
+                            @Override
+                            public int compare(Pokemon o1, Pokemon o2) {
+                                return new Integer(o1.getHeight()).compareTo(o2.getHeight());
+                            }
+                        });
+                        return ResponseEntity.ok(pokemon);
+                    }
+
+                    if (Objects.equals(lowOrHigh, "high")) {
+                        pokemon.sort(new Comparator<Pokemon>() {
+                            @Override
+                            public int compare(Pokemon o1, Pokemon o2) {
+                                return new Integer(o2.getHeight()).compareTo(o1.getHeight());
+                            }
+                        });
+                        return ResponseEntity.ok(pokemon);
+                    }
+                    return ResponseEntity.notFound().build();
+                } catch (Exception e) {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
 }
