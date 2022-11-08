@@ -15,10 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/pokemon")
@@ -43,9 +40,10 @@ public class PokemonController {
             List<CountNextPrevResPk> FirstQueryWithCountNextPrevResult = new ArrayList<CountNextPrevResPk>();
 
             for(int i = 1 ; i <= 2 ; i++ ){
-                FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri, CountNextPrevResPk.class));
-                if(i != 1){
-                    FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?limit=2&offset=0", CountNextPrevResPk.class));
+                if(i == 1){
+                    FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri, CountNextPrevResPk.class));
+                }else{
+                    FirstQueryWithCountNextPrevResult.add(restTemplate.getForObject(uri+"?offset=20&limit=20", CountNextPrevResPk.class));
                 }
             }
 
@@ -101,7 +99,7 @@ public class PokemonController {
     // --- FILTERS ---
     //get pokemon by id - detail
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<Pokemon> getPokemonById(@PathVariable Long id ){
         Optional<Pokemon> pokemon = repository.findById(id);
         try{
@@ -116,20 +114,43 @@ public class PokemonController {
 
     //get pokemons by name
 
-    @GetMapping("/{name}")
-    public ResponseEntity<List<Pokemon>> getPokemonsByName(@PathVariable String name){
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Pokemon> getPokemonsByName(@PathVariable String name){
         Optional<Pokemon> pokemon= repository.findByName(name);
         try {
          if(pokemon.isEmpty()) {
              return ResponseEntity.notFound().build();
          }
-         return ResponseEntity.ok(Collections.singletonList(pokemon.get()));
+            System.out.println(pokemon);
+         return ResponseEntity.ok(pokemon.get());
         }catch(Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
     }
+
     //get pokemons by type
+    @GetMapping("/getByType/{name}")
+    public ResponseEntity<List<Pokemon>> getPokemonsByType(@PathVariable String name){
+        List<Pokemon> pokemon = repository.findAll();
+        System.out.println(pokemon + " soy pokemon po wn");
+        try {
+            if(pokemon.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            List<Pokemon> res = new ArrayList<Pokemon>();
+            for (Pokemon value : pokemon) {
+                ArrayList<Type> types = value.getTypes();
+                for (Type type : types) {
+                    if (Objects.equals(type.getName(), name)) {
+                        res.add(value);
+                    }
+                }
+            }
+            return ResponseEntity.ok(res);
+        }catch(Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     //get pokemons by str
 
