@@ -29,8 +29,8 @@ public class PokemonController {
 
     @Autowired
     private RestTemplate restTemplate;
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/hello")
-    @CrossOrigin(origins = "*")
     public ResponseEntity<List> hello() throws IOException {
 
         try {
@@ -67,13 +67,12 @@ public class PokemonController {
                 ArrayList<Type> pkTypes = new ArrayList<>();
                 for (TypesWithSlot el : value.getTypes()) {
                     pkTypes.add(new Type(el.getType().getName()));
-                    System.out.println(el.getType().getName() + "soy los tipardos anashex");
                 }
                 Pokemon pokemon = new Pokemon(value.getName(), value.getHeight(), value.getWeight(),pkTypes,
-                 value.getSprites().getFront_default(),value.getStats().get(0).getBase_stat()
+                 value.getSprites().getOther().getDream_world().getFront_default(),value.getStats().get(0).getBase_stat()
                         ,value.getStats().get(4).getBase_stat(),value.getStats().get(1).getBase_stat(),
                         value.getStats().get(5).getBase_stat());
-                System.out.println(pokemons);
+
                 repository.save(pokemon);
                 aux2.add(pokemon);
             }
@@ -117,6 +116,19 @@ public class PokemonController {
 
     //get pokemons by name
 
+    @GetMapping("/{name}")
+    public ResponseEntity<List<Pokemon>> getPokemonsByName(@PathVariable String name){
+        Optional<Pokemon> pokemon= repository.findByName(name);
+        try {
+         if(pokemon.isEmpty()) {
+             return ResponseEntity.notFound().build();
+         }
+         return ResponseEntity.ok(Collections.singletonList(pokemon.get()));
+        }catch(Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
     //get pokemons by type
 
     //get pokemons by str
