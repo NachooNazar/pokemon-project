@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Sprites {
-    private Other other;
+public class Other {
+    private dream_world dream_world;
 }
